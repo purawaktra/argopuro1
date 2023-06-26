@@ -1,0 +1,696 @@
+_id: spc_de5f605f52084862b831d1310e4da067
+type: ApiSpec
+parentId: wrk_b6117fc53cb0487384cdc4860cd0f9ae
+modified: 1687788944295
+created: 1687695705688
+fileName: databx
+contents: "openapi: 3.0.0
+
+  info:
+
+  \  description: \"This is API documentation on DataBx Bromo1 Microservices\"
+
+  \  version: 1.0.0
+
+  \  title: DataBx Bromo1 Microservices
+
+  \  contact:
+
+  \    email: akbar.muhammadakbarmaulana@gmail.com
+
+  \  license:
+
+  \    name: Apache 2.0
+
+  \    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+  tags:
+
+  \  - name: account
+
+  \    description: Everything about interaction with user account
+
+  \  - name: city
+
+  \    description: Simple acces to list of city available
+
+  \  - name: province
+
+  \    description: Same as city, instead of province
+
+  \  - name: credential
+
+  \    description: Operation on account credential
+
+  paths:
+
+  \  /account/create:
+
+  \    post:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Add a freshly created account to the table
+
+  \      description: This should be the first process to introduce user to
+  system
+
+  \      operationId: addAccount
+
+  \      requestBody:
+
+  \        $ref: \"#/components/requestBodies/Credential\"
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: Account created successfully, with given request
+
+  \        \"400\":
+
+  \          description: Check request, body not comply with request rules
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /account/login:
+
+  \    post:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Login account to get access token
+
+  \      description: You should do this before taking action to any other
+  APIs
+
+  \      operationId: loginAccount
+
+  \      requestBody:
+
+  \        $ref: \"#/components/requestBodies/Credential\"
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: Account login successfully, with given request
+
+  \        \"400\":
+
+  \          description: Check request, body not comply with request rules
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /account/logout:
+
+  \    post:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Logout account, of course not login
+
+  \      description: Invalidate stored access token in database
+
+  \      operationId: logoutAccount
+
+  \      requestBody:
+
+  \        $ref: \"#/components/requestBodies/Credential\"
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: Account logout successfully, with given request
+
+  \        \"400\":
+
+  \          description: Check request, body not comply with request rules
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /account/{account_id}:
+
+  \    get:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Get data account from table
+
+  \      description: You can get all variables in single response
+
+  \      operationId: getAccountById
+
+  \      parameters:
+
+  \        - name: account_id
+
+  \          in: path
+
+  \          description: ID of account to return
+
+  \          required: true
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: getAccount returned account data based on given
+  request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                $ref: \"#/components/schemas/Account\"
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no account related to
+  request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \    put:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Modify existing account, if any
+
+  \      description: Modify all parameter available to given account
+
+  \      operationId: modifyAccount
+
+  \      requestBody:
+
+  \        $ref: \"#/components/requestBodies/Account\"
+
+  \      parameters:
+
+  \        - name: account_id
+
+  \          in: path
+
+  \          description: Obviously, what do you think to update
+
+  \          required: true
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: Account updated successfully, with given request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                $ref: \"#/components/schemas/Account\"
+
+  \        \"400\":
+
+  \          description: Check request, body not comply with request rules
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no account related to
+  request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \    delete:
+
+  \      tags:
+
+  \        - account
+
+  \      summary: Instead of modify, this is delete
+
+  \      description: Delete all parameter available to given account
+
+  \      operationId: deleteAccount
+
+  \      requestBody:
+
+  \        $ref: \"#/components/requestBodies/Account\"
+
+  \      parameters:
+
+  \        - name: account_id
+
+  \          in: path
+
+  \          description: Obviously, what do you think to delete
+
+  \          required: true
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: Account deleted successfully, with given request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                $ref: \"#/components/schemas/Account\"
+
+  \        \"400\":
+
+  \          description: Check request, body not comply with request rules
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no account related to
+  request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /city:
+
+  \    get:
+
+  \      tags:
+
+  \        - city
+
+  \      summary: Get all data city from table
+
+  \      description: You can get all city in single response, define offset
+  to shift through available data
+
+  \      operationId: getCity
+
+  \      parameters:
+
+  \        - name: offset
+
+  \          in: query
+
+  \          description: offset shift, because this only return at max 10
+  city
+
+  \          required: false
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \        - name: province_id
+
+  \          in: query
+
+  \          description: filter city by province, just in case
+
+  \          required: false
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: getCity returned city based on given request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                type: array
+
+  \                items:
+
+  \                  $ref: \"#/components/schemas/City\"
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no city related to request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /city/{city_id}:
+
+  \    get:
+
+  \      tags:
+
+  \        - city
+
+  \      summary: Return single city response data
+
+  \      description: You can get all city in single response, define offset
+  to shift through available data
+
+  \      operationId: getCityById
+
+  \      parameters:
+
+  \        - name: city_id
+
+  \          in: path
+
+  \          description: ID of city to return
+
+  \          required: true
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: getCity returned city based on given request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                $ref: \"#/components/schemas/City\"
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no city related to request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  \  /province:
+
+  \    get:
+
+  \      tags:
+
+  \        - province
+
+  \      summary: Get all data province from table
+
+  \      description: single response get all province name, define offset to
+  shift through available data
+
+  \      operationId: getProvince
+
+  \      parameters:
+
+  \        - name: offset
+
+  \          in: query
+
+  \          description: offset shift, because this only return at max 10
+  city
+
+  \          required: false
+
+  \          schema:
+
+  \            type: integer
+
+  \            format: int
+
+  \      responses:
+
+  \        \"200\":
+
+  \          description: getCity returned city based on given request
+
+  \          content:
+
+  \            application/json:
+
+  \              schema:
+
+  \                type: array
+
+  \                items:
+
+  \                  $ref: \"#/components/schemas/Province\"
+
+  \        \"401\":
+
+  \          description: You are not permitted!
+
+  \        \"404\":
+
+  \          description: Request understood, but no province related to
+  request
+
+  \        \"500\":
+
+  \          description: General error, system cannot tell you what wrongs
+
+  \        \"503\":
+
+  \          description: Service down, not available rn
+
+  servers:
+
+  \  - url: localhost/v1
+
+  components:
+
+  \  requestBodies:
+
+  \    Credential:
+
+  \      content:
+
+  \        application/json:
+
+  \          schema:
+
+  \            $ref: \"#/components/schemas/Credential\"
+
+  \    Account:
+
+  \      content:
+
+  \        application/json:
+
+  \          schema:
+
+  \            $ref: \"#/components/schemas/Account\"  \ 
+
+  \  schemas:
+
+  \    Credential:
+
+  \      type: object
+
+  \      properties:
+
+  \        email_address:
+
+  \          type: string
+
+  \        password:
+
+  \          type: string
+
+  \    Account:
+
+  \      type: object
+
+  \      properties:
+
+  \        account_id:
+
+  \          type: integer
+
+  \          format: int
+
+  \        first_name:
+
+  \          type: string
+
+  \        last_name:
+
+  \          type: string
+
+  \        address:
+
+  \          type: string
+
+  \        city:
+
+  \          type: integer
+
+  \          format: int
+
+  \        province:
+
+  \          type: integer
+
+  \          format: int
+
+  \        zipcode:
+
+  \          type: string
+
+  \        email_address:
+
+  \          type: string
+
+  \        phone_number:
+
+  \          type: string
+
+  \    City:
+
+  \      type: object
+
+  \      properties:
+
+  \        citi_id:
+
+  \          type: integer
+
+  \          format: int
+
+  \        name:
+
+  \          type: string
+
+  \        province:
+
+  \          type: integer
+
+  \          format: int
+
+  \    Province:
+
+  \      type: object
+
+  \      properties:
+
+  \        province_id:
+
+  \          type: integer
+
+  \          format: int
+
+  \        name:
+
+  \          type: string
+
+  \          "
+contentType: yaml
